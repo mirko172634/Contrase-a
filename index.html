@@ -11,7 +11,7 @@
             --primary-pink: #ffb7c5;
             --deep-pink: #e05275;
             --romantic-red: #c92a42;
-            --bg-color: #fff0f3;
+            --bg-color: #ffe5ec;
             --card-bg: #ffffff;
             --text-color: #3b3032;
         }
@@ -88,9 +88,9 @@
         }
 
         .pin-dot.filled {
-            background: var(--deep-pink);
-            border-color: var(--deep-pink);
-            box-shadow: 0 0 8px rgba(224, 82, 117, 0.6);
+            background: #ffffff;
+            border-color: #ffffff;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
         }
 
         .keypad {
@@ -117,7 +117,7 @@
             background: #333;
         }
 
-        /* SOBRE / CARTA CERRADA */
+        /* SOBRE INICIAL */
         #envelope-container {
             display: none;
             text-align: center;
@@ -161,7 +161,7 @@
             color: #8c7378;
         }
 
-        /* CONTENEDOR DE JODITA (TIPEANDO + BOTÓN "NO ES CHISTOSO") */
+        /* JODITA */
         #typing-container {
             display: none;
             width: 100%;
@@ -203,7 +203,7 @@
             transform: scale(0.95);
         }
 
-        /* CONTENIDO PRINCIPAL (CARTA COMPLETA) */
+        /* CONTENIDO PRINCIPAL */
         #main-content {
             display: none;
             width: 100%;
@@ -274,15 +274,70 @@
             color: #7a686b;
         }
 
-        /* CARTA */
-        .letter-card {
+        /* CARTA PLEGADA QUE SE DESPLIEGA AL HACER CLIC */
+        .folding-letter-container {
             background: var(--card-bg);
             border-radius: 18px;
-            padding: 35px 28px;
             box-shadow: 0 10px 25px rgba(224, 82, 117, 0.1);
-            margin-bottom: 30px;
             border: 1px solid #ffe6ea;
-            line-height: 1.8;
+            margin-bottom: 30px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .folding-letter-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(224, 82, 117, 0.18);
+        }
+
+        /* Cabecera cuando está plegada */
+        .letter-folded-preview {
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(135deg, #fff5f7, #ffe6ea);
+        }
+
+        .letter-folded-preview i {
+            font-size: 2.2rem;
+            color: var(--romantic-red);
+            margin-bottom: 10px;
+            animation: bounce 2s infinite;
+        }
+
+        .letter-folded-preview h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        .letter-folded-preview p {
+            font-size: 0.85rem;
+            color: #8c7378;
+        }
+
+        /* Contenido interno desplegable */
+        .letter-inner-content {
+            max-height: 0;
+            opacity: 0;
+            padding: 0 35px;
+            transition: max-height 1s cubic-bezier(0.25, 1, 0.5, 1), 
+                        opacity 0.6s ease, 
+                        padding 0.6s ease;
+        }
+
+        .folding-letter-container.open .letter-inner-content {
+            max-height: 3000px;
+            opacity: 1;
+            padding: 35px 28px;
+            cursor: default;
+        }
+
+        .folding-letter-container.open {
+            cursor: default;
+            transform: none;
+            box-shadow: 0 10px 25px rgba(224, 82, 117, 0.1);
         }
 
         .letter-salutation {
@@ -297,6 +352,7 @@
             font-size: 1.05rem;
             color: #3b3032;
             text-align: justify;
+            line-height: 1.8;
         }
 
         .letter-body p {
@@ -315,6 +371,8 @@
         .no-touch-section {
             text-align: center;
             margin-bottom: 40px;
+            display: none; 
+            animation: fadeIn 0.8s ease-out;
         }
 
         .danger-btn {
@@ -335,7 +393,7 @@
             transform: scale(0.96);
         }
 
-        /* MODAL MENSAJE SECRETO */
+        /* MODAL */
         .warning-overlay {
             position: fixed;
             top: 0;
@@ -389,7 +447,7 @@
             font-size: 0.95rem;
         }
 
-        /* REPRODUCTOR DE MÚSICA */
+        /* REPRODUCTOR */
         .music-player {
             position: fixed;
             bottom: 18px;
@@ -452,12 +510,10 @@
 </head>
 <body>
 
-    <!-- REPRODUCTOR DE AUDIO LOCAL (musica.mp3) -->
     <audio id="bg-music" loop preload="auto">
         <source src="musica.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- REPRODUCTOR FLOTANTE -->
     <div class="music-player" id="music-player-ui">
         <button class="music-btn" id="play-btn" onclick="toggleMusic()">
             <i class="fas fa-play" id="play-icon"></i>
@@ -468,21 +524,18 @@
         </div>
     </div>
 
-    <!-- PANTALLA DE BLOQUEO (TECLADO NUMÉRICO) -->
+    <!-- PANTALLA DE BLOQUEO -->
     <div id="lock-screen">
         <div class="title-lock">ACCESO RESTRINGIDO</div>
-
         <div class="hint-text" id="hint-box">
             <i class="fas fa-key"></i> ¿Día y mes que empezamos a hablar?
         </div>
-
         <div class="pin-display">
             <div class="pin-dot" id="dot-0"></div>
             <div class="pin-dot" id="dot-1"></div>
             <div class="pin-dot" id="dot-2"></div>
             <div class="pin-dot" id="dot-3"></div>
         </div>
-
         <div class="keypad">
             <button class="key-btn" onclick="pressKey('1')">1</button>
             <button class="key-btn" onclick="pressKey('2')">2</button>
@@ -501,7 +554,7 @@
         </div>
     </div>
 
-    <!-- PASO 1 Y 2: SOBRE / CARTA CERRADA -->
+    <!-- SOBRE INICIAL -->
     <div id="envelope-container">
         <div class="envelope-box" onclick="openEnvelope()">
             <div class="envelope-icon">
@@ -512,7 +565,7 @@
         </div>
     </div>
 
-    <!-- PASO 3 Y 4: EFECTO DE ESCRITURA + BOTÓN "NO ES CHISTOSO" -->
+    <!-- JODITA -->
     <div id="typing-container">
         <div class="typing-text" id="typing-text"></div>
         <button class="not-funny-btn" id="not-funny-btn" onclick="showRealLetter()">
@@ -520,15 +573,13 @@
         </button>
     </div>
 
-    <!-- PASO 5 Y 6: CONTENIDO PRINCIPAL (CARTA COMPLETA + BOTÓN NO TOCAR ABAJO) -->
+    <!-- CONTENIDO PRINCIPAL -->
     <div id="main-content">
-        
         <div class="header-banner">
             <h1 class="main-title">Felices 7 Meses</h1>
             <p class="sub-banner">20 DE FEBRERO • 20 DE SEPTIEMBRE</p>
         </div>
 
-        <!-- Contador -->
         <div class="counter-card">
             <div class="counter-title"><i class="fas fa-hourglass-half"></i> Tiempo transcurrido desde nuestro primer mensaje</div>
             <div class="time-grid">
@@ -551,44 +602,41 @@
             </div>
         </div>
 
-        <!-- CARTA COMPLETA -->
-        <div class="letter-card">
-            <div class="letter-salutation">Hola mi gordita linda,</div>
-            <div class="letter-body">
-                <p>
-                    Hoy cumplimos 7 meses desde que empezamos a hablar. Parece increíble lo rápido que pasa el tiempo cuando uno la pasa tan bien con alguien. Todo empezó un 20 de febrero gracias a una joda de Rodri; aunque en ese momento ninguno de los dos estuvo realmente interesado, hablarte fue una decisión de la que jamás me voy a arrepentir.
-                </p>
-                <p>
-                    Me encanta el humor que compartimos, te amo como sos, gruñona, te ponés de mal humor tan fácil que me dan ganas de abrazarte y besarte mientras estás enojada. Cuando sos cariñosa siento que no hay nada mejor en la vida, siento que es lo mejor que veo en la vida, sos hermosa y muy buena persona.
-                </p>
-                <p>
-                    Creo que sos la persona con la que más me abrí, a la que más le conté mis miedos y mis problemas sin filtros. A veces sé que está mal depender emocionalmente de alguien, pero si lo pensás bien, es algo hermoso: es entregarle una parte genuina de lo que soy, poner mis días, mis risas y mi estabilidad en tus manos, porque al final del día darte ese lugar es darte todo lo que tengo.
-                </p>
-                <p>
-                    Gracias por ser la mejor compañía y por escucharme en cada problema que tuve. En estos 7 meses no solo aprendí a amarte más cada día, sino también me di cuenta de que amar es entender que cada uno puede cometer errores, pero lo importante es arreglarlos y cambiar juntos. Valoro muchísimo lo que sos para mí.
-                </p>
-                <p>
-                    Sé que pasamos por muchas cosas juntos y que incluso estuvimos muy cerca de terminar hace poco, sumado a otras situaciones que a ambos nos incomodaron. Pero a pesar de todo, quiero que sepas que te amo con el alma, que en mi vida sos solo vos y no quiero a nadie más. Con vos logré un vínculo muy difícil de conseguir: tuviste una versión de mí que ninguna pareja de mi pasado conoció, y estoy seguro de que yo también tengo esa versión tan especial de vos. Sin tu apoyo en cada momento o situación, no sé qué habría hecho; creo que yo hubiera sido mucho menos.
-                </p>
-                <p>
-                    Pasamos demasiado juntos y ojalá esto nunca se termine. Gracias por cada día, por cada risa y por enseñarme a amar de esta manera.
-                </p>
+        <!-- CARTA PLEGADA QUE SE DESPLIEGA AL HACER CLIC -->
+        <div class="folding-letter-container" id="folding-letter" onclick="unfoldLetter()">
+            <!-- Vista previa cuando está plegada -->
+            <div class="letter-folded-preview" id="folded-preview">
+                <i class="fas fa-envelope-open"></i>
+                <h3>Carta 💌</h3>
+                <p>Tocá acá para abrirla</p>
             </div>
-            <div class="letter-closing">
-                Felices 7 meses, mi vida. ❤️
+
+            <!-- Contenido real de la carta que se despliega hacia abajo -->
+            <div class="letter-inner-content">
+                <div class="letter-salutation">Hola mi gordita linda,</div>
+                <div class="letter-body">
+                    <p>Hoy cumplimos 7 meses desde que empezamos a hablar. Parece increíble lo rápido que pasa el tiempo cuando uno la pasa tan bien con alguien. Todo empezó un 20 de febrero gracias a una joda de Rodri; aunque en ese momento ninguno de los dos estuvo realmente interesado, hablarte fue una decisión de la que jamás me voy a arrepentir.</p>
+                    <p>Me encanta el humor que compartimos, te amo como sos, gruñona, te ponés de mal humor tan fácil que me dan ganas de abrazarte y besarte mientras estás enojada. Cuando sos cariñosa siento que no hay nada mejor en la vida, siento que es lo mejor que veo en la vida, sos hermosa y muy buena persona.</p>
+                    <p>Creo que sos la persona con la que más me abrí, a la que más le conté mis miedos y mis problemas sin filtros. A veces sé que está mal depender emocionalmente de alguien, pero si lo pensás bien, es algo hermoso: es entregarle una parte genuina de lo que soy, poner mis días, mis risas y mi estabilidad en tus manos, porque al final del día darte ese lugar es darte todo lo que tengo.</p>
+                    <p>Gracias por ser la mejor compañía y por escucharme en cada problema que tuve. En estos 7 meses no solo aprendí a amarte más cada día, sino también me di cuenta de que amar es entender que cada uno puede cometer errores, pero lo importante es arreglarlos y cambiar juntos. Valoro muchísimo lo que sos para mí.</p>
+                    <p>Sé que pasamos por muchas cosas juntos y que incluso estuvimos muy cerca de terminar hace poco, sumado a otras situaciones que a ambos nos incomodaron. Pero a pesar de todo, quiero que sepas que te amo con el alma, que en mi vida sos solo vos y no quiero a nadie más. Con vos logré un vínculo muy difícil de conseguir: tuviste una versión de mí que ninguna pareja de mi pasado conoció, y estoy seguro de que yo también tengo esa versión tan especial de vos. Sin tu apoyo en cada momento o situación, no sé qué habría hecho; creo que yo hubiera sido mucho menos.</p>
+                    <p>Pasamos demasiado juntos y ojalá esto nunca se termine. Gracias por cada día, por cada risa y por enseñarme a amar de esta manera.</p>
+                </div>
+                <div class="letter-closing">
+                    Felices 7 meses, mi vida. ❤️
+                </div>
             </div>
         </div>
 
-        <!-- BOTÓN NO TOCAR ABAJO DE TODO -->
-        <div class="no-touch-section">
+        <!-- BOTÓN NO TOCAR (Aparece cuando se despliega la carta) -->
+        <div class="no-touch-section" id="no-touch-section">
             <button class="danger-btn" onclick="triggerWarning()">
                 <i class="fas fa-exclamation-triangle"></i> NO TOCAR
             </button>
         </div>
-
     </div>
 
-    <!-- MODAL ADVERTENCIA -->
+    <!-- MODAL -->
     <div class="warning-overlay" id="warning-modal">
         <div class="warning-box">
             <div class="warning-title" id="warn-title">⚠️ ¡PARÁ PARÁ, NO TOQUES!</div>
@@ -607,6 +655,7 @@
         let currentPin = "";
         let failedAttempts = 0;
         let isPlaying = false;
+        let letterOpened = false;
 
         function pressKey(key) {
             if (key === '#') {
@@ -618,9 +667,7 @@
                     currentPin += key;
                 }
             }
-
             updateDots();
-
             if (currentPin.length === 4) {
                 setTimeout(checkPin, 150);
             }
@@ -645,20 +692,14 @@
                 lockCard.style.display = 'none';
                 document.body.classList.add('unlocked');
                 document.getElementById('music-player-ui').style.display = 'flex';
-                
-                // Mostrar el sobre cerrado
                 document.getElementById('envelope-container').style.display = 'block';
-                
                 startMusic();
-
             } else {
                 failedAttempts++;
                 lockCard.classList.add('shake');
-                
                 if (failedAttempts >= 1) {
                     hintBox.style.display = 'block';
                 }
-
                 setTimeout(() => {
                     lockCard.classList.remove('shake');
                     currentPin = "";
@@ -670,7 +711,6 @@
         function openEnvelope() {
             document.getElementById('envelope-container').style.display = 'none';
             document.getElementById('typing-container').style.display = 'block';
-            
             startTypingEffect();
         }
 
@@ -679,7 +719,7 @@
             const typingElement = document.getElementById('typing-text');
             const notFunnyBtn = document.getElementById('not-funny-btn');
             let i = 0;
-            const speed = 70; 
+            const speed = 35; 
 
             function typeWriter() {
                 if (i < text.length) {
@@ -690,7 +730,6 @@
                     notFunnyBtn.style.display = 'block';
                 }
             }
-
             typeWriter();
         }
 
@@ -700,13 +739,30 @@
             startCounter();
         }
 
+        function unfoldLetter() {
+            if (letterOpened) return;
+            letterOpened = true;
+
+            const letterContainer = document.getElementById('folding-letter');
+            const preview = document.getElementById('folded-preview');
+
+            letterContainer.classList.add('open');
+
+            setTimeout(() => {
+                preview.style.display = 'none';
+            }, 300);
+
+            setTimeout(() => {
+                document.getElementById('no-touch-section').style.display = 'block';
+            }, 900);
+        }
+
         function startMusic() {
             const audio = document.getElementById('bg-music');
             audio.play().then(() => {
                 isPlaying = true;
                 updateIcon(true);
             }).catch(err => {
-                console.log("Autoplay bloqueado:", err);
                 isPlaying = false;
                 updateIcon(false);
             });
@@ -732,7 +788,6 @@
 
         function startCounter() {
             const startDate = new Date('2026-02-20T00:00:00');
-
             function update() {
                 const now = new Date();
                 const diff = now - startDate;
@@ -747,7 +802,6 @@
                 document.getElementById('minutes').innerText = minutes >= 0 ? minutes : 0;
                 document.getElementById('seconds').innerText = seconds >= 0 ? seconds : 0;
             }
-
             update();
             setInterval(update, 1000);
         }
