@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Mi Gordita Linda ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Roboto+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --deep-pink: #e05275;
+            --romantic-red: #c92a42;
+            --bg-color: #fff0f3;
+            --card-bg: #ffffff;
+            --text-color: #3b3032;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #121212;
+            min-height: 100vh;
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 15px;
+            transition: background 0.8s ease;
+        }
+
+        body.unlocked {
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* BLOQUEO */
+        #lock-screen {
+            background: #1e1e1e;
+            padding: 35px 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+            width: 100%;
+            max-width: 340px;
+            text-align: center;
+        }
+
+        .title-lock {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .hint-text {
+            color: #ff6b6b;
+            font-size: 0.85rem;
+            background: rgba(255, 107, 107, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 107, 107, 0.3);
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .pin-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .pin-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #555;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .pin-dot.filled {
+            background: var(--deep-pink);
+            border-color: var(--deep-pink);
+            box-shadow: 0 0 8px rgba(224, 82, 117, 0.6);
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .key-btn {
+            background: #2a2a2a;
+            border: 1px solid #3a3a3a;
+            border-radius: 12px;
+            height: 55px;
+            font-size: 1.3rem;
+            color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+
+        .key-btn:active {
+            background: #333;
+        }
+
+        /* CONTENIDO PRINCIPAL */
+        #main-content {
+            display: none;
+            width: 100%;
+            max-width: 680px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .header-banner {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .main-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.2rem;
+            color: var(--romantic-red);
+            margin-bottom: 5px;
+        }
+
+        .sub-banner {
+            font-size: 0.85rem;
+            color: #8c7378;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        /* CONTADOR */
+        .counter-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(224, 82, 117, 0.08);
+            margin-bottom: 25px;
+            border: 1px solid #ffe6ea;
+        }
+
+        .counter-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #8c7378;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .time-box {
+            background: #fff5f7;
+            padding: 10px 5px;
+            border-radius: 10px;
+        }
+
+        .time-num {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--deep-pink);
+            display: block;
+        }
+
+        .time-label {
+            font-size: 0.7rem;
+            color: #7a686b;
+        }
+
+        /* CARTA */
+        .letter-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 35px 28px;
+            box-shadow: 0 10px 25px rgba(224, 82, 117, 0.1);
+            margin-bottom: 30px;
+            border: 1px solid #ffe6ea;
+            line-height: 1.8;
+        }
+
+        .letter-salutation {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.2rem;
+            color: var(--romantic-red);
+            margin-bottom: 20px;
+        }
+
+        .letter-body {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            color: #3b3032;
+            text-align: justify;
+        }
+
+        .letter-body p {
+            margin-bottom: 16px;
+        }
+
+        .letter-closing {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            color: var(--deep-pink);
+            text-align: right;
+            margin-top: 25px;
+        }
+
+        /* BOTÓN NO TOCAR */
+        .no-touch-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .danger-btn {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(255, 65, 108, 0.3);
+            letter-spacing: 1px;
+            transition: transform 0.2s ease;
+        }
+
+        .danger-btn:active {
+            transform: scale(0.96);
+        }
+
+        /* MODAL MENSAJE SECRETO */
+        .warning-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .warning-box {
+            background: white;
+            border-radius: 18px;
+            padding: 28px 22px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            color: #333;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .warning-title {
+            font-size: 1.5rem;
+            color: #d32f2f;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .secret-message {
+            display: none;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #2c3e50;
+            margin-top: 15px;
+        }
+
+        .close-btn {
+            margin-top: 20px;
+            background: var(--deep-pink);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        /* REPRODUCTOR DE MÚSICA */
+        .music-player {
+            position: fixed;
+            bottom: 18px;
+            right: 18px;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+            border: 1px solid #ffe6ea;
+        }
+
+        .music-btn {
+            background: var(--deep-pink);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .music-info {
+            file-size: 0.78rem;
+            color: #4a3e3e;
+        }
+
+        .music-info span {
+            display: block;
+            font-weight: 600;
+            color: var(--deep-pink);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        .shake { animation: shake 0.35s ease-in-out; }
+    </style>
+</head>
+<body>
+
+    <!-- REPRODUCTOR DE AUDIO LOCAL (musica.mp3) -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="musica.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- REPRODUCTOR FLOTANTE -->
+    <div class="music-player" id="music-player-ui">
+        <button class="music-btn" id="play-btn" onclick="toggleMusic()">
+            <i class="fas fa-play" id="play-icon"></i>
+        </button>
+        <div class="music-info">
+            <span id="song-title">Pensamientos</span>
+            <small id="song-artist">Airbag</small>
+        </div>
+    </div>
+
+    <!-- PANTALLA DE BLOQUEO -->
+    <div id="lock-screen">
+        <div class="title-lock">ACCESO RESTRINGIDO</div>
+
+        <div class="hint-text" id="hint-box">
+            <i class="fas fa-key"></i> ¿Día y mes que empezamos a hablar?
+        </div>
+
+        <div class="pin-display">
+            <div class="pin-dot" id="dot-0"></div>
+            <div class="pin-dot" id="dot-1"></div>
+            <div class="pin-dot" id="dot-2"></div>
+            <div class="pin-dot" id="dot-3"></div>
+        </div>
+
+        <div class="keypad">
+            <button class="key-btn" onclick="pressKey('1')">1</button>
+            <button class="key-btn" onclick="pressKey('2')">2</button>
+            <button class="key-btn" onclick="pressKey('3')">3</button>
+            <button class="key-btn" onclick="pressKey('4')">4</button>
+            <button class="key-btn" onclick="pressKey('5')">5</button>
+            <button class="key-btn" onclick="pressKey('6')">6</button>
+            <button class="key-btn" onclick="pressKey('7')">7</button>
+            <button class="key-btn" onclick="pressKey('8')">8</button>
+            <button class="key-btn" onclick="pressKey('9')">9</button>
+            <button class="key-btn" style="color: #aaa; font-size: 0.9rem;" onclick="pressKey('*')">*</button>
+            <button class="key-btn" onclick="pressKey('0')">0</button>
+            <button class="key-btn" style="color: #aaa; font-size: 0.9rem;" onclick="pressKey('#')">
+                <i class="fas fa-backspace"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div id="main-content">
+        
+        <div class="header-banner">
+            <h1 class="main-title">Felices 7 Meses</h1>
+            <p class="sub-banner">20 DE FEBRERO • 20 DE SEPTIEMBRE</p>
+        </div>
+
+        <!-- Contador -->
+        <div class="counter-card">
+            <div class="counter-title"><i class="fas fa-hourglass-half"></i> Tiempo transcurrido desde nuestro primer mensaje</div>
+            <div class="time-grid">
+                <div class="time-box">
+                    <span class="time-num" id="days">--</span>
+                    <span class="time-label">Días</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-num" id="hours">--</span>
+                    <span class="time-label">Horas</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-num" id="minutes">--</span>
+                    <span class="time-label">Minutos</span>
+                </div>
+                <div class="time-box">
+                    <span class="time-num" id="seconds">--</span>
+                    <span class="time-label">Segundos</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CARTA COMPLETA -->
+        <div class="letter-card">
+            <div class="letter-salutation">Hola mi gordita linda,</div>
+            <div class="letter-body">
+                <p>
+                    Hoy cumplimos 7 meses desde que empezamos a hablar. Parece increíble lo rápido que pasa el tiempo cuando uno la pasa tan bien con alguien. Todo empezó un 20 de febrero gracias a una joda de Rodri; aunque en ese momento ninguno de los dos estuvo realmente interesado, hablarte fue una decisión de la que jamás me voy a arrepentir.
+                </p>
+                <p>
+                    Me encanta el humor que compartimos, te amo como sos, gruñona, te ponés de mal humor tan fácil que me dan ganas de abrazarte y besarte mientras estás enojada. Cuando sos cariñosa siento que no hay nada mejor en la vida, siento que es lo mejor que veo en la vida, sos hermosa y muy buena persona.
+                </p>
+                <p>
+                    Creo que sos la persona con la que más me abrí, a la que más le conté mis miedos y mis problemas sin filtros. A veces sé que está mal depender emocionalmente de alguien, pero si lo pensás bien, es algo hermoso: es entregarle una parte genuina de lo que soy, poner mis días, mis risas y mi estabilidad en tus manos, porque al final del día darte ese lugar es darte todo lo que tengo.
+                </p>
+                <p>
+                    Gracias por ser la mejor compañía y por escucharme en cada problema que tuve. En estos 7 meses no solo aprendí a amarte más cada día, sino también me di cuenta de que amar es entender que cada uno puede cometer errores, pero lo importante es arreglarlos y cambiar juntos. Valoro muchísimo lo que sos para mí.
+                </p>
+                <p>
+                    Sé que pasamos por muchas cosas juntos y que incluso estuvimos muy cerca de terminar hace poco, sumado a otras situaciones que a ambos nos incomodaron. Pero a pesar de todo, quiero que sepas que te amo con el alma, que en mi vida sos solo vos y no quiero a nadie más. Con vos logré un vínculo muy difícil de conseguir: tuviste una versión de mí que ninguna pareja de mi pasado conoció, y estoy seguro de que yo también tengo esa versión tan especial de vos. Sin tu apoyo en cada momento o situación, no sé qué habría hecho; creo que yo hubiera sido mucho menos.
+                </p>
+                <p>
+                    Pasamos demasiado juntos y ojalá esto nunca se termine. Gracias por cada día, por cada risa y por enseñarme a amar de esta manera.
+                </p>
+            </div>
+            <div class="letter-closing">
+                Felices 7 meses, mi vida. ❤️
+            </div>
+        </div>
+
+        <!-- BOTÓN NO TOCAR -->
+        <div class="no-touch-section">
+            <button class="danger-btn" onclick="triggerWarning()">
+                <i class="fas fa-exclamation-triangle"></i> NO TOCAR
+            </button>
+        </div>
+
+    </div>
+
+    <!-- MODAL ADVERTENCIA -->
+    <div class="warning-overlay" id="warning-modal">
+        <div class="warning-box">
+            <div class="warning-title" id="warn-title">⚠️ ¡PARÁ PARÁ, NO TOQUES!</div>
+            <div id="warn-loading" style="font-size: 2rem; color: #ff4b2b; margin: 15px 0;">
+                <i class="fas fa-spinner fa-spin"></i>
+            </div>
+            <div class="secret-message" id="secret-msg">
+                Te dije que no tocaras... pero ya que sos tan rebelde y no hacés caso, aprovecho para decirte que sos lo más lindo que me pasó en la vida. Gracias por bancarme en todas, por sacarme una sonrisa hasta en mis peores días y por ser exactamente como sos. No te cambio por nada en este mundo, gordita hermosa. ❤️
+            </div>
+            <button class="close-btn" id="modal-close-btn" style="display:none;" onclick="closeWarning()">Cerrar ❤️</button>
+        </div>
+    </div>
+
+    <script>
+        const CORRECT_PIN = "2002";
+        let currentPin = "";
+        let failedAttempts = 0;
+        let isPlaying = false;
+
+        function pressKey(key) {
+            if (key === '#') {
+                currentPin = currentPin.slice(0, -1);
+            } else if (key === '*') {
+                return;
+            } else {
+                if (currentPin.length < 4) {
+                    currentPin += key;
+                }
+            }
+
+            updateDots();
+
+            if (currentPin.length === 4) {
+                setTimeout(checkPin, 150);
+            }
+        }
+
+        function updateDots() {
+            for (let i = 0; i < 4; i++) {
+                const dot = document.getElementById(`dot-${i}`);
+                if (i < currentPin.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            }
+        }
+
+        function checkPin() {
+            const lockCard = document.getElementById('lock-screen');
+            const hintBox = document.getElementById('hint-box');
+
+            if (currentPin === CORRECT_PIN) {
+                lockCard.style.display = 'none';
+                document.body.classList.add('unlocked');
+                document.getElementById('music-player-ui').style.display = 'flex';
+                document.getElementById('main-content').style.display = 'block';
+                
+                startMusic();
+                startCounter();
+
+            } else {
+                failedAttempts++;
+                lockCard.classList.add('shake');
+                
+                if (failedAttempts >= 1) {
+                    hintBox.style.display = 'block';
+                }
+
+                setTimeout(() => {
+                    lockCard.classList.remove('shake');
+                    currentPin = "";
+                    updateDots();
+                }, 400);
+            }
+        }
+
+        function startMusic() {
+            const audio = document.getElementById('bg-music');
+            audio.play().then(() => {
+                isPlaying = true;
+                updateIcon(true);
+            }).catch(err => {
+                console.log("Autoplay bloqueado:", err);
+                isPlaying = false;
+                updateIcon(false);
+            });
+        }
+
+        function toggleMusic() {
+            const audio = document.getElementById('bg-music');
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                updateIcon(false);
+            } else {
+                audio.play();
+                isPlaying = true;
+                updateIcon(true);
+            }
+        }
+
+        function updateIcon(playing) {
+            const icon = document.getElementById('play-icon');
+            icon.className = playing ? 'fas fa-pause' : 'fas fa-play';
+        }
+
+        function startCounter() {
+            const startDate = new Date('2026-02-20T00:00:00');
+
+            function update() {
+                const now = new Date();
+                const diff = now - startDate;
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((diff / 1000 / 60) % 60);
+                const seconds = Math.floor((diff / 1000) % 60);
+
+                document.getElementById('days').innerText = days >= 0 ? days : 0;
+                document.getElementById('hours').innerText = hours >= 0 ? hours : 0;
+                document.getElementById('minutes').innerText = minutes >= 0 ? minutes : 0;
+                document.getElementById('seconds').innerText = seconds >= 0 ? seconds : 0;
+            }
+
+            update();
+            setInterval(update, 1000);
+        }
+
+        function triggerWarning() {
+            const modal = document.getElementById('warning-modal');
+            const title = document.getElementById('warn-title');
+            const loading = document.getElementById('warn-loading');
+            const msg = document.getElementById('secret-msg');
+            const closeBtn = document.getElementById('modal-close-btn');
+
+            modal.style.display = 'flex';
+            title.innerText = '⚠️ ¡PARÁ PARÁ, NO TOQUES!';
+            loading.style.display = 'block';
+            msg.style.display = 'none';
+            closeBtn.style.display = 'none';
+
+            setTimeout(() => {
+                loading.style.display = 'none';
+                title.innerText = 'Bueno... ya que tocaste igual ❤️';
+                msg.style.display = 'block';
+                closeBtn.style.display = 'inline-block';
+            }, 1200);
+        }
+
+        function closeWarning() {
+            document.getElementById('warning-modal').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
