@@ -719,7 +719,7 @@
             const typingElement = document.getElementById('typing-text');
             const notFunnyBtn = document.getElementById('not-funny-btn');
             let i = 0;
-            const speed = 24; // Ajustado para que termine exactamente en 5 segundos
+            const speed = 8; // Súper rápido para que termine en aprox 2 segundos
 
             function typeWriter() {
                 if (i < text.length) {
@@ -728,7 +728,7 @@
                     i++;
                     
                     if (char === '.' && text.substr(i-3, 3) === '...') {
-                        setTimeout(typeWriter, 200);
+                        setTimeout(typeWriter, 80);
                     } else {
                         setTimeout(typeWriter, speed);
                     }
@@ -765,7 +765,7 @@
 
         function startMusic() {
             const audio = document.getElementById('bg-music');
-            audio.volume = 0.3; // Volumen al 30%
+            audio.volume = 0.15; // Volumen bajito al 15%
             audio.play().then(() => {
                 isPlaying = true;
                 updateIcon(true);
