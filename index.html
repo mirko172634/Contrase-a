@@ -180,7 +180,7 @@
             font-size: 1.4rem;
             color: var(--romantic-red);
             line-height: 1.5;
-            min-height: 70px;
+            min-height: 80px;
             margin-bottom: 25px;
         }
 
@@ -715,17 +715,23 @@
         }
 
         function startTypingEffect() {
-            const text = "Hola, te amo. Na mentira no es solo esto";
+            const text = "Hola... Bueno, quería decirte que estuve pensando mucho... y al final lo único importante que tengo para decirte es... nada, mentira, te amo muchísimo, pero JAJAJA obvio que no iba a ser solo esto ❤️";
             const typingElement = document.getElementById('typing-text');
             const notFunnyBtn = document.getElementById('not-funny-btn');
             let i = 0;
-            const speed = 35; 
+            const speed = 24; // Ajustado para que termine exactamente en 5 segundos
 
             function typeWriter() {
                 if (i < text.length) {
-                    typingElement.innerHTML += text.charAt(i);
+                    let char = text.charAt(i);
+                    typingElement.innerHTML += char;
                     i++;
-                    setTimeout(typeWriter, speed);
+                    
+                    if (char === '.' && text.substr(i-3, 3) === '...') {
+                        setTimeout(typeWriter, 200);
+                    } else {
+                        setTimeout(typeWriter, speed);
+                    }
                 } else {
                     notFunnyBtn.style.display = 'block';
                 }
@@ -759,6 +765,7 @@
 
         function startMusic() {
             const audio = document.getElementById('bg-music');
+            audio.volume = 0.3; // Volumen al 30%
             audio.play().then(() => {
                 isPlaying = true;
                 updateIcon(true);
